@@ -259,6 +259,22 @@ ssh-copy-id -i ~/.ssh/id_hostinger.pub SEU_USUARIO_SERVER@DOMINIO_SERVER
 ssh SEU_USUARIO_SERVER@DOMINIO_SERVER -i ~/.ssh/id_hostinger
 # ENTROU? Ok, volte para seu terminal normal (seu computador)
 exit
+
+# Se nada disso acima funcionar, tente criar manualmente
+# pois alguns casos é necessário pra poder copiar a chave ssh do root
+# e o seu novo user conseguir acessar o servidor
+# Verifica se o arquivo existe
+cat /home/secs-dev/.ssh/authorized_keys
+
+# Se não existir, cria copiando do root
+mkdir -p /home/SEU_USUÁRIO/.ssh
+cp /root/.ssh/authorized_keys /home/SEU_USUÁRIO/.ssh/
+chown -R SEU_USUÁRIO:SEU_USUÁRIO /home/SEU_USUÁRIO/.ssh
+chmod 700 /home/SEU_USUÁRIO/.ssh
+chmod 600 /home/SEU_USUÁRIO/.ssh/authorized_keys
+
+# Após isso tente novamente acessar agora com seu novo usuário
+ssh SEU_USUÁRIO_NOVO@IP_DO_SERVIDOR (OU DOMÍNIO)
 ```
 
 Para não ter que ficar digitando a chave, usuário e senha, vamos configurar
